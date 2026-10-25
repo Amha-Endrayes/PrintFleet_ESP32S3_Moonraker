@@ -1,0 +1,27 @@
+services:
+  printfleet:
+    build: ./server
+    restart: unless-stopped
+    environment:
+      INGEST_TOKEN: ${INGEST_TOKEN:?Set INGEST_TOKEN}
+      DASHBOARD_TOKEN: ${DASHBOARD_TOKEN:?Set DASHBOARD_TOKEN}
+      RETENTION_DAYS: ${RETENTION_DAYS:-30}
+      DATABASE_PATH: /data/printfleet.db
+    volumes:
+      - printfleet_data:/data
+    expose:
+      - '8000'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+volumes:
+  printfleet_data:

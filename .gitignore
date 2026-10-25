@@ -1,0 +1,6 @@
+.env
+.venv/
+.pio/
+__pycache__/
+.pytest_cache/
+*.db*
